@@ -1,30 +1,31 @@
 import React, { Fragment, Component } from "react";
 import "../styles/InputControl.css";
-import { Form, Col, InputGroup, FormControl } from "react-bootstrap";
+import { Form, Col, InputGroup, FormControl, Row } from "react-bootstrap";
 import InputPrepend from "./InputPrepend.js"
 import InputAppend from "./InputAppend.js"
 import PropTypes from "prop-types";
 
-export default function InputControl(props) {  
-  return (          
-    <Fragment>
-      <Col md><Form.Label>{props.labelText}</Form.Label></Col>            
+export default function InputControl({ readOnly, labelText, inputValue, inputPrepend, inputAppend }) {  
+  return (       
+    <Form.Group as={Row}>       
+      <Col md><Form.Label>{labelText}</Form.Label></Col>            
       <InputGroup as={Col} md>
         <InputPrepend 
-          visible={props.inputPrepend.visible}
-          text={props.inputPrepend.text}
+          visible={inputPrepend.visible}
+          text={inputPrepend.text}
         />
-        <FormControl value={props.inputValue}/>
+        <FormControl value={inputValue} readOnly={readOnly}/>
         <InputAppend
-          visible={props.inputAppend.visible}
-          text={props.inputAppend.text}
+          visible={inputAppend.visible}
+          text={inputAppend.text}
         />
       </InputGroup>    
-    </Fragment>
+    </Form.Group>
   );     
 }
 
 InputControl.propTypes = {
+  readOnly: PropTypes.bool.isRequired,
   labelText: PropTypes.string.isRequired,
   inputValue: PropTypes.number.isRequired,
   inputPrepend: PropTypes.shape({
@@ -39,11 +40,11 @@ InputControl.propTypes = {
 
 InputControl.defaultProps = {  
   inputPrepend: {
-    value: false,
+    visible: false,
     text: ""
   },
   inputAppend: {
-    value: false,
+    visible: false,
     text: ""
   }
 }

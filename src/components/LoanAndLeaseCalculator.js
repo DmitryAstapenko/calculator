@@ -4,6 +4,7 @@ import "../styles/LoanAndLeaseCalculator.css";
 import LoanCalculator from "./LoanCalculator.js";
 import LeaseCalculator from "./LeaseCalculator.js";
 import InfoCard from "./InfoCard.js";
+import PropTypes from "prop-types";
 
 class LoanAndLeaseCalculator extends Component {
   constructor() {

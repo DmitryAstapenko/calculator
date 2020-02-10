@@ -1,8 +1,9 @@
 import React, { Fragment } from "react";
 import { Card, Button } from "react-bootstrap";
 import "../styles/InfoCard.css";
+import PropTypes from "prop-types";
 
-function InfoCard(props) {  
+export default function InfoCard(props) {  
   return (        
     <Card>        
       <Card.Body>
@@ -17,4 +18,10 @@ function InfoCard(props) {
   );     
 }
 
-export default InfoCard;
+InfoCard.propTypes = {
+  msrp: PropTypes.number,
+  vehicleName: PropTypes.string,
+  dealerName: PropTypes.string,
+  dealerPhone: PropTypes.string,
+  dealerRating: PropTypes.number
+}
