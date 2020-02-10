@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import "../styles/LoanCalculator.css";
-import { Form, Col, InputGroup, FormControl } from "react-bootstrap";
-import { Row } from "react-bootstrap";
+import { Form, Col, InputGroup, FormControl, Row } from "react-bootstrap";
+import InputControl from "./InputControl.js";
 
 class LoanCalculator extends Component {
   constructor() {
     super();
     this.state = {      
+      estLoan: 0,
       term: 24,
       tradeIn: 0,
       downPayment: 0,            
@@ -16,7 +17,7 @@ class LoanCalculator extends Component {
   }
 
   render() {
-    return (          
+    return (                
       <Form className="p-2">        
         <Form.Group as={Row}>          
           <Col md><Form.Label>ZIP Code</Form.Label></Col>
@@ -37,13 +38,11 @@ class LoanCalculator extends Component {
           </Col>
         </Form.Group>
         <Form.Group as={Row}>
-          <Col md><Form.Label>Trade-In Value</Form.Label></Col>            
-          <InputGroup as={Col} md>
-            <InputGroup.Prepend>
-              <InputGroup.Text>$</InputGroup.Text>
-            </InputGroup.Prepend>              
-            <FormControl value={0}/>
-          </InputGroup>    
+          <InputControl 
+            labelText="Trade-In Value"
+            inputValue={this.state.tradeIn}
+            inputPrepend={{visible: true, text: "$"}}            
+          />          
         </Form.Group>                    
         <Form.Group as={Row}>
           <Col md><Form.Label>Down Payment</Form.Label></Col>
@@ -51,7 +50,7 @@ class LoanCalculator extends Component {
             <InputGroup.Prepend>
               <InputGroup.Text>$</InputGroup.Text>
             </InputGroup.Prepend>              
-            <FormControl value={0}/>
+            <FormControl value={this.state.downPayment}/>
           </InputGroup>    
         </Form.Group>
         <Form.Group as={Row}>                                                  
@@ -68,11 +67,11 @@ class LoanCalculator extends Component {
         </Form.Group>
         <Form.Group as={Row}>
           <Col md><Form.Label>Estimated APR</Form.Label></Col>
-          <InputGroup as={Col} md>            
-            <FormControl value={0}/>
-            <InputGroup.Prepend>
+          <InputGroup as={Col} md>  
+            <FormControl value={this.state.estimatedAPR}/>
+            <InputGroup.Append>
               <InputGroup.Text>%</InputGroup.Text>
-            </InputGroup.Prepend>              
+            </InputGroup.Append>                          
           </InputGroup>    
         </Form.Group>                    
       </Form>

@@ -1,7 +1,0 @@
-dataInfoCard = {
-  msrp: 42818,
-  vehicleName: "Toyota Prius",  
-  dealerName: "New York Toyota car dealership",
-  dealerPhone: "(855) 977-2913",
-  dealerRating: 4.1
-};

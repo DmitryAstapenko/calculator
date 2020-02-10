@@ -1,11 +1,29 @@
 import React, { Component } from "react";
-import LoanAndLease from "./LoanAndLeaseCalculator.js";
+import LoanAndLeaseCalculator from "./LoanAndLeaseCalculator.js";
 import "../styles/App.css";
 
 class App extends Component {
-  render() {
+  
+  loadDataInfoCard() {
+    return {
+      msrp: 42818,
+      vehicleName: "Toyota Prius",  
+      dealerName: "New York Toyota car dealership",
+      dealerPhone: "(855) 977-2913",
+      dealerRating: 4.1
+    }
+  }
+
+  getZipCode() {
+    return 247210;
+  }
+
+  render() {        
     return (
-      <LoanAndLease/>
+      <LoanAndLeaseCalculator 
+        infoCard={this.loadDataInfoCard()}
+        zipCode={this.getZipCode()}
+      />
     );
   }
 }
