@@ -1,17 +1,17 @@
 import React, { Fragment, Component } from "react";
-import "../styles/InputAppend.css";
+import "../styles/InputControlPrepend.css";
 import { InputGroup } from "react-bootstrap";
 import PropTypes from "prop-types";
 
-export default function InputAppend({ visible, text }) {  
+export default function InputControlPrepend({ visible, text }) {  
   return visible ? (
-    <InputGroup.Append>
+    <InputGroup.Prepend>
       <InputGroup.Text>{text}</InputGroup.Text>
-    </InputGroup.Append>
+    </InputGroup.Prepend>
   ) : null;
 }
 
-InputAppend.propTypes = {
+InputControlPrepend.propTypes = {
   visible: PropTypes.bool.isRequired,
   text: PropTypes.string  
 }

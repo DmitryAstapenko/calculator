@@ -1,76 +1,108 @@
 import React, { Component, useState } from "react";
 import "../styles/LoanCalculator.css";
-import { Form, Col, InputGroup, FormControl, Row } from "react-bootstrap";
+import { Form, Col, InputGroup, FormControl, Row, Button } from "react-bootstrap";
 import InputControl from "./InputControl.js";
+import InputSelect from "./InputSelect.js"
 import PropTypes from "prop-types";
 
-export default function LoanCalculator({ msrp, zipCode}) {  
-  let [estLoan, setEstLoan] = useState(0);
-  let [term, setTerm] = useState(24);
-  let [tradeIn, setTradeIn] = useState(0);
-  let [downPayment, setDownPayment] = useState(0);
-  let [creditScore, setCreditScore] = useState(750);
-  let [estimatedAPR, setEstimatedAPR] = useState(0);
+export default class LoanCalculator extends Component {  
+  constructor(props) {
+    super(props);
+    this.state = {      
+      estLoan: 0,
+      term: 24,
+      tradeIn: 0,
+      downPayment: 0,
+      creditScore: 750,
+      estimatedAPR: 0
+    };    
+  }
 
-  return (                
-    <Form className="p-2">        
-      <InputControl
-        readOnly={true}
-        labelText="ZIP Code"
-        inputValue={zipCode}        
-      />                       
-      <Form.Group as={Row}>                                                  
-        <Col md><Form.Label>Term (Mounths)</Form.Label></Col>
-        <Col md>
-          <Form.Control as="select">
-            <option>12</option>
-            <option>24</option>
-            <option>36</option>
-            <option>48</option>
-            <option>60</option>
-            <option>72</option>
-            <option>84</option>
-          </Form.Control>
-        </Col>
-      </Form.Group>      
-      <InputControl  
-        readOnly={false}
-        labelText="Trade-In Value"
-        inputValue={tradeIn}
-        inputPrepend={{visible: true, text: "$"}}            
-      />          
-      <Form.Group as={Row}>
-        <Col md><Form.Label>Down Payment</Form.Label></Col>
-        <InputGroup as={Col} md>
-          <InputGroup.Prepend>
-            <InputGroup.Text>$</InputGroup.Text>
-          </InputGroup.Prepend>              
-          <FormControl value={downPayment}/>
-        </InputGroup>    
-      </Form.Group>
-      <Form.Group as={Row}>                                                  
-        <Col md><Form.Label>Approx. Credit Score</Form.Label></Col>
-        <Col md>
-          <Form.Control as="select">
-            <option>600-649</option>
-            <option>650-699</option>
-            <option>700-749</option>
-            <option>750-849</option>                            
-            <option>850-900</option>                            
-          </Form.Control>
-        </Col>
-      </Form.Group>
-      <Form.Group as={Row}>
-        <Col md><Form.Label>Estimated APR</Form.Label></Col>
-        <InputGroup as={Col} md>  
-          <FormControl value={estimatedAPR}/>
-          <InputGroup.Append>
-            <InputGroup.Text>%</InputGroup.Text>
-          </InputGroup.Append>                          
-        </InputGroup>    
-      </Form.Group>                    
-    </Form>
-  );
+  // calculateLoan = () => {
+  //   const value = 
+  //   ((this.props.msrp - this.state.tradeIn - this.state.downPayment)
+  //   * this.state.creditScore * (1 + this.state.estimatedAPR / 100)) 
+  //   / this.state.term;    
+  //   this.setState({ estLoan: value });
+  // }
+
+  handleChangeTerm = (value) => {
+    this.setState({ term: value });    
+  }
+
+  handleChangeTradeIn = (value) => {
+    this.setState({ tradeIn: value });    
+  }
+
+  handleChangeDownPayment = (value) => {
+    this.setState({ downPayment: value });    
+  }
+
+  handleChangeCreditScore = (value) => {
+    this.setState({ creditScore: value });    
+  }
+
+  handleChangeEstimatedAPR = (value) => {
+    this.setState({ estimatedAPR: value });    
+  }
+
+  handleSubmit = (event) => { 
+    event.preventDefault();
+    console.log(this.state.estLoan); 
+    console.log(this.state.term);        
+    console.log(this.state.tradeIn);
+    console.log(this.state.downPayment);
+    console.log(this.state.creditScore);
+    console.log(this.state.estimatedAPR);
+    console.log(this.props.zipCode);        
+  } 
+
+  render() {
+    return (                
+      <Form className="p-2" onSubmit={this.handleSubmit}>                                       
+        <InputSelect
+          labelText="Term (Mounths)"
+          inputValue={this.state.term}
+          handleChange={this.handleChangeTerm}
+          options={[12, 24, 36, 48, 60, 72, 80]}
+        />        
+        <InputControl  
+          labelText="Trade-In Value"
+          inputValue={this.state.tradeIn}
+          handleChange={this.handleChangeTradeIn}                   
+          inputPrepend={{visible: true, text: "$"}}             
+        />
+        <InputControl  
+          labelText="Down Payment"
+          inputValue={this.state.downPayment}
+          handleChange={this.handleChangeDownPayment}                   
+          inputPrepend={{visible: true, text: "$"}}             
+        />
+        <InputSelect
+          labelText="Approx. Credit Score"
+          inputValue={this.state.creditScore}
+          handleChange={this.handleChangeCreditScore}
+          options={[600, 650, 700, 750, 800, 850, 900]}
+        />     
+        <InputControl  
+          labelText="Estimated APR"
+          inputValue={this.state.estimatedAPR}
+          handleChange={this.handleChangeEstimatedAPR}                   
+          inputAppend={{visible: true, text: "%"}}             
+        />   
+        <InputControl
+          readOnly={true}
+          labelText="For ZIP Code"
+          inputValue={this.props.zipCode}        
+        />    
+        <Form.Group as={Row}>
+          <Col>
+            <Button type="submit" block>Submit</Button>
+          </Col>
+        </Form.Group>
+      </Form>
+    );
+  }
 }
 
 LoanCalculator.propTypes = {
