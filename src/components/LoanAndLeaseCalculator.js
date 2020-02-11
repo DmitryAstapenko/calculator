@@ -7,9 +7,16 @@ import InfoCard from "./InfoCard.js";
 import PropTypes from "prop-types";
 
 class LoanAndLeaseCalculator extends Component {
-  constructor() {
-    super();                
-  }     
+  constructor(props) {
+    super(props);
+    this.state = {
+      estLoan: 0    
+    };                
+  }       
+
+  handleChangeEstLoan = (value) => {
+    this.setState({ estLoan: value });  
+  }
 
   render() {
     return (                  
@@ -17,10 +24,14 @@ class LoanAndLeaseCalculator extends Component {
         <Row>
           <Col md={8}>            
             <Tabs justify>
-              <Tab eventKey="loan" title="Est. Loan">
-                <LoanCalculator
+              <Tab 
+                eventKey="loan" 
+                title={"Est. Loan: " + Math.round(this.state.estLoan)}
+              >
+                <LoanCalculator                
                   msrp={this.props.infoCard.msrp}
-                  zipCode={this.props.zipCode}
+                  zipCode={this.props.zipCode}                  
+                  handleChangeEstLoan={this.handleChangeEstLoan}
                 />
               </Tab>    
               <Tab eventKey="lease" title="Est. Lease">

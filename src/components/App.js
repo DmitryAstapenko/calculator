@@ -6,7 +6,7 @@ class App extends Component {
   
   loadDataInfoCard() {
     return {
-      msrp: 42818,
+      msrp: 23240,
       vehicleName: "Toyota Prius",  
       dealerName: "New York Toyota car dealership",
       dealerPhone: "(855) 977-2913",

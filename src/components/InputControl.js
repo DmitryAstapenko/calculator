@@ -1,15 +1,23 @@
-import React, { Fragment, Component, useState } from "react";
+import React from "react";
 import "../styles/InputControl.css";
 import { Form, Col, InputGroup, FormControl, Row } from "react-bootstrap";
 import InputControlPrepend from "./InputControlPrepend.js"
 import InputControlAppend from "./InputControlAppend.js"
 import PropTypes from "prop-types";
 
-export default function InputControl(props) 
-{ 
+const InputControl = React.memo(function InputControl(props) {
   function handleChange(event) {    
     const value = event.target.value;    
     props.handleChange(Number(value));
+  }
+
+  function  handleBlur() {
+    props.handleChangeEstLoan();
+  }
+
+  function handleKeydown(event) {
+    if (event.key === "Enter")
+      props.handleChangeEstLoan();
   }
 
   return (       
@@ -25,6 +33,8 @@ export default function InputControl(props)
           readOnly={props.readOnly}
           value={props.inputValue} 
           onChange={handleChange}          
+          onBlur={handleBlur}
+          onKeyDown={handleKeydown}
         />
         <InputControlAppend
           visible={props.inputAppend.visible}
@@ -33,13 +43,14 @@ export default function InputControl(props)
       </InputGroup>    
     </Form.Group>
   );     
-}
+});
 
 InputControl.propTypes = {  
   readOnly: PropTypes.bool,  
   labelText: PropTypes.string,    
   inputValue: PropTypes.number.isRequired,
-  handleChange: PropTypes.func,
+  handleChange: PropTypes.func.isRequired,
+  handleChangeEstLoan: PropTypes.func.isRequired,
   inputPrepend: PropTypes.shape({
     visible: PropTypes.bool,
     text: PropTypes.string
@@ -52,8 +63,7 @@ InputControl.propTypes = {
 
 InputControl.defaultProps = {    
   readOnly: false,    
-  labelText: "",    
-  handleChange: null,
+  labelText: "",      
   inputPrepend: {
     visible: false,
     text: ""
@@ -63,3 +73,5 @@ InputControl.defaultProps = {
     text: ""
   }
 }
+
+export default InputControl;

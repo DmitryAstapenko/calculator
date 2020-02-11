@@ -1,6 +1,6 @@
 import React, { Component, useState } from "react";
 import "../styles/LoanCalculator.css";
-import { Form, Col, InputGroup, FormControl, Row, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import InputControl from "./InputControl.js";
 import InputSelect from "./InputSelect.js"
 import PropTypes from "prop-types";
@@ -8,23 +8,26 @@ import PropTypes from "prop-types";
 export default class LoanCalculator extends Component {  
   constructor(props) {
     super(props);
-    this.state = {      
-      estLoan: 0,
+    this.state = {            
       term: 24,
       tradeIn: 0,
       downPayment: 0,
-      creditScore: 750,
+      creditScore: 0.95,
       estimatedAPR: 0
     };    
   }
 
-  // calculateLoan = () => {
-  //   const value = 
-  //   ((this.props.msrp - this.state.tradeIn - this.state.downPayment)
-  //   * this.state.creditScore * (1 + this.state.estimatedAPR / 100)) 
-  //   / this.state.term;    
-  //   this.setState({ estLoan: value });
-  // }
+  calculateValueEstLoan() {
+    return(((this.props.msrp - this.state.tradeIn - this.state.downPayment)
+    * this.state.creditScore * (1 + this.state.estimatedAPR / 100)) 
+    / this.state.term);
+  }
+
+  handleChangeEstLoan = () => {
+    const value = this.calculateValueEstLoan();
+    this.props.handleChangeEstLoan(value);    
+    // console.log("Done!");
+  }
 
   handleChangeTerm = (value) => {
     this.setState({ term: value });    
@@ -46,60 +49,64 @@ export default class LoanCalculator extends Component {
     this.setState({ estimatedAPR: value });    
   }
 
-  handleSubmit = (event) => { 
-    event.preventDefault();
-    console.log(this.state.estLoan); 
-    console.log(this.state.term);        
-    console.log(this.state.tradeIn);
-    console.log(this.state.downPayment);
-    console.log(this.state.creditScore);
-    console.log(this.state.estimatedAPR);
-    console.log(this.props.zipCode);        
-  } 
-
   render() {
-    return (                
-      <Form className="p-2" onSubmit={this.handleSubmit}>                                       
+    return (                            
+      <Form className="p-2">                                       
         <InputSelect
           labelText="Term (Mounths)"
           inputValue={this.state.term}
           handleChange={this.handleChangeTerm}
-          options={[12, 24, 36, 48, 60, 72, 80]}
+          handleChangeEstLoan={this.handleChangeEstLoan}
+          options={[
+            {text: "12", value: 12}, 
+            {text: "24", value: 24}, 
+            {text: "36", value: 36}, 
+            {text: "48", value: 48}, 
+            {text: "60", value: 60}, 
+            {text: "72", value: 72}, 
+            {text: "84", value: 84}, 
+          ]}
         />        
         <InputControl  
           labelText="Trade-In Value"
           inputValue={this.state.tradeIn}
-          handleChange={this.handleChangeTradeIn}                   
+          handleChange={this.handleChangeTradeIn}       
+          handleChangeEstLoan={this.handleChangeEstLoan}            
           inputPrepend={{visible: true, text: "$"}}             
         />
         <InputControl  
           labelText="Down Payment"
           inputValue={this.state.downPayment}
-          handleChange={this.handleChangeDownPayment}                   
+          handleChange={this.handleChangeDownPayment}   
+          handleChangeEstLoan={this.handleChangeEstLoan}                
           inputPrepend={{visible: true, text: "$"}}             
         />
         <InputSelect
           labelText="Approx. Credit Score"
           inputValue={this.state.creditScore}
           handleChange={this.handleChangeCreditScore}
-          options={[600, 650, 700, 750, 800, 850, 900]}
+          handleChangeEstLoan={this.handleChangeEstLoan}
+          options={[
+            {text: "Poor 639 or less" , value: 1.2},
+            {text: "Fair 640 - 699" , value: 1.05},
+            {text: "Good 700 - 749" , value: 1},
+            {text: "Excellent 750 - 850" , value: 0.95}            
+          ]}
         />     
         <InputControl  
           labelText="Estimated APR"
           inputValue={this.state.estimatedAPR}
-          handleChange={this.handleChangeEstimatedAPR}                   
+          handleChange={this.handleChangeEstimatedAPR}  
+          handleChangeEstLoan={this.handleChangeEstLoan}                 
           inputAppend={{visible: true, text: "%"}}             
         />   
         <InputControl
           readOnly={true}
           labelText="For ZIP Code"
-          inputValue={this.props.zipCode}        
-        />    
-        <Form.Group as={Row}>
-          <Col>
-            <Button type="submit" block>Submit</Button>
-          </Col>
-        </Form.Group>
+          inputValue={this.props.zipCode}  
+          handleChange={() => {}}  
+          handleChangeEstLoan={() => {}}       
+        />            
       </Form>
     );
   }
@@ -107,5 +114,6 @@ export default class LoanCalculator extends Component {
 
 LoanCalculator.propTypes = {
   msrp: PropTypes.number,
-  zipCode: PropTypes.number  
+  zipCode: PropTypes.number,
+  handleChangeEstLoan: PropTypes.func  
 }
