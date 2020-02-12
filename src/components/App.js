@@ -20,7 +20,7 @@ export default class App extends Component {
       dataInfoCard: data, 
       isLoadedDataInfoCard: true
     });
-    fetch("https://ipinfo.io/json?token=eb5b90bb77d46a")
+    fetch("https://ipinfo.io/json?token=5de68b00f760f2")
         .then(response => response.json())
         .then(data => {          
           this.setState({ 
