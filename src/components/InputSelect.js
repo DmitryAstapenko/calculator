@@ -5,25 +5,27 @@ import PropTypes from "prop-types";
 
 const InputSelect = React.memo(function InputSelect(props) { 
   function handleChange(event) {    
+    const name = event.target.name;
     const value = event.target.value;    
-    props.handleChange(Number(value));
+    props.handleChange(name, Number(value));
   }
 
   function handleBlur() {
-    props.handleChangeEstLoan();
+    props.handleChangeEst();
   }
 
-  function handleKeydown(event) {
+  function handleKeydown(event) {    
     if (event.key === "Enter")
-      props.handleChangeEstLoan();
+      props.handleChangeEst();
   }
 
   return (       
     <Form.Group as={Row}>          
       <Col md><Form.Label>{props.labelText}</Form.Label></Col>
       <Col md>
-        <Form.Control 
+        <Form.Control           
           as="select"
+          name={props.name}
           value={props.inputValue} 
           onChange={handleChange}          
           onBlur={handleBlur}
@@ -45,15 +47,17 @@ const InputSelect = React.memo(function InputSelect(props) {
   );     
 });
 
-InputSelect.propTypes = {    
+InputSelect.propTypes = {   
+  name: PropTypes.string, 
   labelText: PropTypes.string,    
   inputValue: PropTypes.number.isRequired,
   handleChange: PropTypes.func.isRequired, 
-  handleChangeEstLoan: PropTypes.func.isRequired,
+  handleChangeEst: PropTypes.func.isRequired,
   options: PropTypes.array
 }
 
-InputSelect.defaultProps = {    
+InputSelect.defaultProps = { 
+  name: "",   
   labelText: ""      
 }
 

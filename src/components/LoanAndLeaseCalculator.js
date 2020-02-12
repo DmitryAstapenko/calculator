@@ -6,11 +6,12 @@ import LeaseCalculator from "./LeaseCalculator.js";
 import InfoCard from "./InfoCard.js";
 import PropTypes from "prop-types";
 
-class LoanAndLeaseCalculator extends Component {
+export default class LoanAndLeaseCalculator extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      estLoan: 0    
+      estLoan: 0,
+      estLease: 0
     };                
   }       
 
@@ -18,7 +19,11 @@ class LoanAndLeaseCalculator extends Component {
     this.setState({ estLoan: value });  
   }
 
-  render() {
+  handleChangeEstLease = (value) => {
+    this.setState({ estLease: value });  
+  }
+
+  render() {    
     return (                  
       <Container className="mt-1">    
         <Row>
@@ -26,32 +31,31 @@ class LoanAndLeaseCalculator extends Component {
             <Tabs justify>
               <Tab 
                 eventKey="loan" 
-                title={"Est. Loan: " + Math.round(this.state.estLoan)}
+                title={"Est. Loan: " + Math.round(this.state.estLoan) + "/mo"}
               >
                 <LoanCalculator                
-                  msrp={this.props.infoCard.msrp}
+                  msrp={this.props.dataInfoCard.msrp}
                   zipCode={this.props.zipCode}                  
-                  handleChangeEstLoan={this.handleChangeEstLoan}
+                  handleChangeEst={this.handleChangeEstLoan}
                 />
               </Tab>    
-              <Tab eventKey="lease" title="Est. Lease">
-                <LeaseCalculator/>
+              <Tab 
+                eventKey="lease" 
+                title={"Est. Lease: " + Math.round(this.state.estLease) + "/mo"}
+              >
+                <LeaseCalculator
+                  msrp={this.props.dataInfoCard.msrp}
+                  zipCode={this.props.zipCode}                  
+                  handleChangeEst={this.handleChangeEstLease}
+                />
               </Tab>    
             </Tabs>  
           </Col>
           <Col md={4}>            
-            <InfoCard 
-              msrp={this.props.infoCard.msrp}
-              vehicleName={this.props.infoCard.vehicleName}
-              dealerName={this.props.infoCard.dealerName}
-              dealerPhone={this.props.infoCard.dealerPhone}
-              dealerRating={this.props.infoCard.dealerRating}
-            />
+            <InfoCard dataInfoCard={this.props.dataInfoCard}/>
           </Col>
         </Row>
       </Container>
     );
   }
 }
-
-export default LoanAndLeaseCalculator;

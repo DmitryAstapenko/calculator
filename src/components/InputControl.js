@@ -7,17 +7,18 @@ import PropTypes from "prop-types";
 
 const InputControl = React.memo(function InputControl(props) {
   function handleChange(event) {    
+    const name = event.target.name;
     const value = event.target.value;    
-    props.handleChange(Number(value));
+    props.handleChange(name, Number(value));
   }
 
   function  handleBlur() {
-    props.handleChangeEstLoan();
+    props.handleChangeEst();
   }
 
   function handleKeydown(event) {
     if (event.key === "Enter")
-      props.handleChangeEstLoan();
+      props.handleChangeEst();
   }
 
   return (       
@@ -28,8 +29,9 @@ const InputControl = React.memo(function InputControl(props) {
           visible={props.inputPrepend.visible}
           text={props.inputPrepend.text}
         />
-        <FormControl                     
+        <FormControl                                       
           type="number"          
+          name={props.name}
           readOnly={props.readOnly}
           value={props.inputValue} 
           onChange={handleChange}          
@@ -45,12 +47,13 @@ const InputControl = React.memo(function InputControl(props) {
   );     
 });
 
-InputControl.propTypes = {  
+InputControl.propTypes = { 
+  name: PropTypes.string,  
   readOnly: PropTypes.bool,  
   labelText: PropTypes.string,    
   inputValue: PropTypes.number.isRequired,
   handleChange: PropTypes.func.isRequired,
-  handleChangeEstLoan: PropTypes.func.isRequired,
+  handleChangeEst: PropTypes.func.isRequired,
   inputPrepend: PropTypes.shape({
     visible: PropTypes.bool,
     text: PropTypes.string
@@ -61,7 +64,8 @@ InputControl.propTypes = {
   })
 }
 
-InputControl.defaultProps = {    
+InputControl.defaultProps = {  
+  name: "",  
   readOnly: false,    
   labelText: "",      
   inputPrepend: {

@@ -1,31 +1,43 @@
 import React, { Component } from "react";
 import LoanAndLeaseCalculator from "./LoanAndLeaseCalculator.js";
 import "../styles/App.css";
+import { Spinner } from "react-bootstrap";
 
-class App extends Component {
-  
-  loadDataInfoCard() {
-    return {
-      msrp: 23240,
-      vehicleName: "Toyota Prius",  
-      dealerName: "New York Toyota car dealership",
-      dealerPhone: "(855) 977-2913",
-      dealerRating: 4.1
-    }
+export default class App extends Component {
+  constructor() {
+    super();
+    this.state = {      
+      zipCode: 0,      
+      isLoadedZipCode: false,
+      dataInfoCard: { },
+      isLoadedDataInfoCard: false
+    };
   }
 
-  getZipCode() {
-    return 247210;
-  }
+  componentDidMount() {
+    const data = require("../../public/data-info-card.json");     
+    this.setState({ 
+      dataInfoCard: data, 
+      isLoadedDataInfoCard: true
+    });
+    fetch("https://ipinfo.io/json?token=eb5b90bb77d46a")
+        .then(response => response.json())
+        .then(data => {          
+          this.setState({ 
+            zipCode: Number(data.postal),
+            isLoadedZipCode: true
+          });                    
+        })
+}
 
   render() {        
-    return (
+    return this.state.isLoadedZipCode && this.state.isLoadedDataInfoCard ? (
       <LoanAndLeaseCalculator 
-        infoCard={this.loadDataInfoCard()}
-        zipCode={this.getZipCode()}
+        dataInfoCard={this.state.dataInfoCard}
+        zipCode={this.state.zipCode}
       />
+    ) : (      
+      <Spinner animation="border" size="lg" />
     );
   }
 }
-
-export default App;

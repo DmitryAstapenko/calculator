@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from "react";
+import React from "react";
 import "../styles/InputControlPrepend.css";
 import { InputGroup } from "react-bootstrap";
 import PropTypes from "prop-types";
